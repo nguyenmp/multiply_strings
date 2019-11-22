@@ -8,7 +8,41 @@ def main(first, second):
     """
     Given two strings of nubmers, returns a string representing it's multiple
     """
-    return mult_digit(first, second[0])
+    rows_to_sum = []
+
+    # Multiply the first with each digit of the second,
+    # then shift by the magnitude of the second's index
+    # Each of these mutiples makes up a row to sum in the end
+    for index, second_digit in enumerate(reversed(second)):
+        row = mult_digit(first, second_digit)
+
+        # Our offset to the right is the number of trailing zeros to add
+        for _ in range(0, index):
+            row += '0'
+
+        rows_to_sum.append(row)
+
+    # Add up all the rows to sum, don't forget the carry
+    result = []
+    carry = 0
+    index = 0
+    len_of_rows = [len(row) for row in rows_to_sum]
+    while index < max(len_of_rows):
+        digit = 0
+        for row in rows_to_sum:
+            if index < len(row):
+                digit += int(list(reversed(row))[index])
+            else:
+                digit += 0
+        digit += carry
+        result.insert(0, str(digit % 10))
+        carry = digit / 10
+        index += 1
+
+    if carry:
+        result.insert(0, str(carry))
+
+    return ''.join(result)
 
 
 def mult_digit(number, digit):
@@ -52,9 +86,10 @@ def mult_digit(number, digit):
     (13, 2),
     (13, 4),
     (12356, 9),
-    # (10, 10),
-    # (123456789, 987654321),
-    # (123456789987654321, 123456789987654321),
+    (9, 12356),
+    (10, 10),
+    (123456789, 987654321),
+    (123456789987654321, 123456789987654321),
 ])
 def test_foo(first, second):
     '''
