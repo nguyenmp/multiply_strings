@@ -22,7 +22,14 @@ def main(first, second):
 
         rows_to_sum.append(row)
 
-    # Add up all the rows to sum, don't forget the carry
+    return sum_rows(rows_to_sum)
+
+
+def sum_rows(rows_to_sum):
+    '''
+    Given a list of strings that reprsent numbers,
+    returns a single string that represents the sum of those numbers
+    '''
     result = []
     carry = 0
     index = 0
