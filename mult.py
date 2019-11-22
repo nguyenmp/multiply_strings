@@ -5,19 +5,36 @@ Given two numeric strings, return their multiple
 import pytest
 
 def main(first, second):
+    return mult_digit(first, second[0])
+
+def mult_digit(number, digit):
+    '''
+    Given a number which can be long and a digit which is only one digit,
+    returns the multplication of the number with the given digit.
+
+    This is a convenience fucntion, since long form multiplicatino is just
+    summing up the multiplciation of smaller digits.
+
+    number (str): a string of at least one digit, e.g. "123"
+    digit (str): a string of a single digit, e.g. "1"
+    '''
+
     # This stores the result of a single multiply
-    row_1 = []
+    result = []
     carry = 0
-    for c in reversed(first):
-        value = int(second[0]) * int(c) + carry
-        row_1.insert(0, str(value %10))
+
+    # Walk right to left, multiplying hte digit ot each digit in the number
+    # this is how I normally do multiplication in my head...
+    for c in reversed(number):
+        value = int(digit) * int(c) + carry
+        result.insert(0, str(value %10))
         carry = value / 10
 
     # There might still be a carry from the final multiply, so add that
     if carry:
-        row_1.insert(0, str(carry))
+        result.insert(0, str(carry))
 
-    return ''.join(row_1)
+    return ''.join(result)
 
 @pytest.mark.parametrize('a,b', [
     (1, 1),
